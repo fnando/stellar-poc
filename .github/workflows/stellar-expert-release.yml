@@ -1,0 +1,27 @@
+---
+name: Stellar Expert - Build and Release
+on:
+  workflow_dispatch:
+    inputs:
+      release_name:
+        description: "Unique release name"
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: write
+  attestations: write
+
+jobs:
+  release-contract-hello:
+    uses: stellar-expert/soroban-build-workflow/.github/workflows/release.yml@main
+    with:
+      release_name: ${{ github.event.inputs.release_name }}
+      release_description: "Contract release"
+      relative_path: '["contracts/hello"]'
+      package: "hello"
+      # make_target: "build-dependencies"
+      # home_domain: "example.com" # organization's domain name (optional)
+    secrets:
+      release_token: ${{ secrets.GITHUB_TOKEN }}
